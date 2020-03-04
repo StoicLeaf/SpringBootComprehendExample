@@ -1,37 +1,43 @@
 package net.matt.awsComprehendService.services.implementations;
 
-import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
-import com.amazonaws.services.comprehend.AmazonComprehend;
-import com.amazonaws.services.comprehend.AmazonComprehendClientBuilder;
-import com.amazonaws.services.comprehend.model.DetectSentimentRequest;
-import com.amazonaws.services.comprehend.model.DetectSentimentResult;
+import com.google.gson.JsonObject;
 import net.matt.awsComprehendService.services.AWSGatewayService;
-import org.springframework.beans.factory.annotation.Value;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Service;
-import com.amazonaws.auth.AWSCredentialsProvider;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 @Service
 public class AWSGatewayServiceImp implements AWSGatewayService {
 
-    @Value("${AWS_ACCESS_KEY}")
-    private String awsAccessKey;
-
-    @Value("${AWS_SECRET_KEY}")
-    private String awsSecretKey;
-
     @Override
     public String callAWSComprehend(String feedbackEntry) {
-        AWSCredentialsProvider credentials = DefaultAWSCredentialsProviderChain.getInstance();
+        String detectSentimentResult = "";
 
-        AmazonComprehend comprehendClient =
-                AmazonComprehendClientBuilder.standard()
-                        .withCredentials(credentials)
-                        .withRegion("eu-central-1")
-                        .build();
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("text", feedbackEntry);
+        StringEntity stringEntity = new StringEntity(jsonObject.toString(), "UTF-8");
 
-        DetectSentimentRequest detectSentimentRequest = new DetectSentimentRequest().withText(feedbackEntry)
-                .withLanguageCode("en");
-        DetectSentimentResult detectSentimentResult = comprehendClient.detectSentiment(detectSentimentRequest);
+        HttpPost httpPost = new HttpPost("https://yrf4n2ki59.execute-api.eu-central-1.amazonaws.com/test/comprehendcall");
+        httpPost.setEntity(stringEntity);
+
+        HttpClient httpClient = HttpClientBuilder.create().build();
+        try {
+            HttpResponse httpResponse = httpClient.execute(httpPost);
+            System.out.println(httpResponse);
+            detectSentimentResult = EntityUtils.toString(httpResponse.getEntity());
+
+        } catch (IOException e) {
+            System.out.println("[ERROR] " + e.toString());
+            return "error";
+        }
         return detectSentimentResult.toString();
     }
 }

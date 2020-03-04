@@ -1,9 +1,7 @@
 package net.matt.awsComprehendService.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
+import net.matt.awsComprehendService.entities.TextSentiment;
 import net.matt.awsComprehendService.services.AWSGatewayService;
 import net.matt.awsComprehendService.services.AWSdatabaseService;
 import net.matt.awsComprehendService.services.SessionDataService;
@@ -53,13 +51,17 @@ public class PageController {
         String mockSentimentJsonResponse = new String(Files.readAllBytes(path));
         //TESTING STUFF DONE
 
-        String inferenceResponse = awsGatewayService.callAWSComprehend(feedbackEntry);
-        JsonObject jsonObject = JsonParser.parseString(inferenceResponse).getAsJsonObject();
-        System.out.println(jsonObject.toString());
+        //String inferenceResponse = awsGatewayService.callAWSComprehend(feedbackEntry);
+        //if(inferenceResponse.matches("error")){
+        //    return "error";
+        //}
+        //JsonObject jsonObject = JsonParser.parseString(inferenceResponse).getAsJsonObject();
 
         //String sentiment = jsonObject.get("Sentiment").getAsString();
         //Double positiveDouble = jsonObject.get("SentimentScore").getAsJsonObject().get("Positive").getAsDouble();
         //BigDecimal bd = new BigDecimal(positiveDouble).setScale(4, RoundingMode.HALF_UP);
+
+        TextSentiment textSentiment = new TextSentiment(feedbackEntry, mockSentimentJsonResponse);
 
         String databaseResponse = awsDatabaseService.persistEvaluatedFeedback();
 
