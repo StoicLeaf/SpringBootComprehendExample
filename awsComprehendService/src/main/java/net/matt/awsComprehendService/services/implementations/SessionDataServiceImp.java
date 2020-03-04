@@ -1,5 +1,6 @@
 package net.matt.awsComprehendService.services.implementations;
 
+import net.matt.awsComprehendService.entities.TextSentiment;
 import net.matt.awsComprehendService.services.SessionDataService;
 import org.springframework.stereotype.Service;
 
@@ -7,7 +8,7 @@ import org.springframework.stereotype.Service;
 public class SessionDataServiceImp implements SessionDataService {
 
     private String feedback;
-    private String feedbackEvaluation;
+    private TextSentiment feedbackEvaluation;
 
     @Override
     public String getFeedback() {
@@ -20,12 +21,12 @@ public class SessionDataServiceImp implements SessionDataService {
     }
 
     @Override
-    public String getFeedbackEvaluation() {
+    public TextSentiment getFeedbackEvaluation() {
         return feedbackEvaluation;
     }
 
     @Override
-    public void setFeedbackEvaluation(String feedbackEvaluation) {
+    public void setFeedbackEvaluation(TextSentiment feedbackEvaluation) {
         this.feedbackEvaluation = feedbackEvaluation;
     }
 }

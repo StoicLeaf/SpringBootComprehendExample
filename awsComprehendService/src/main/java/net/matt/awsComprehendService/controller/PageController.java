@@ -63,10 +63,10 @@ public class PageController {
 
         TextSentiment textSentiment = new TextSentiment(feedbackEntry, mockSentimentJsonResponse);
 
-        String databaseResponse = awsDatabaseService.persistEvaluatedFeedback();
+        String databaseResponse = awsDatabaseService.persistEvaluatedFeedback(textSentiment);
 
         sessionDataService.setFeedback(feedbackEntry);
-        sessionDataService.setFeedbackEvaluation("inferenceResponse.response");
+        sessionDataService.setFeedbackEvaluation(textSentiment);
         return "redirect:/app/feedbackResult";
     }
 

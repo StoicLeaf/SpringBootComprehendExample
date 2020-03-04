@@ -15,6 +15,7 @@ public class TextSentiment implements Serializable {
     private double negativeEstimate;
     private double neutralEstimate;
     private double mixedEstimate;
+    private String detectedLanguage;
 
     public TextSentiment(){
 
@@ -43,6 +44,8 @@ public class TextSentiment implements Serializable {
         percentage = Double.valueOf(sentimentJson.get("Mixed").getAsString());
         bd = new BigDecimal(percentage).setScale(4, RoundingMode.HALF_UP);
         this.mixedEstimate = bd.doubleValue();
+
+        this.detectedLanguage = jsonObject.get("detectedLanguage").getAsString();
     }
 
     public String getText() {
@@ -93,6 +96,14 @@ public class TextSentiment implements Serializable {
         this.mixedEstimate = mixedEstimate;
     }
 
+    public String getDetectedLanguage() {
+        return detectedLanguage;
+    }
+
+    public void setDetectedLanguage(String detectedLanguage) {
+        this.detectedLanguage = detectedLanguage;
+    }
+
     @Override
     public String toString() {
         return "TextSentiment{" +
@@ -102,6 +113,7 @@ public class TextSentiment implements Serializable {
                 ", negativeEstimate=" + negativeEstimate +
                 ", neutralEstimate=" + neutralEstimate +
                 ", mixedEstimate=" + mixedEstimate +
+                ", detectedLanguage='" + detectedLanguage + '\'' +
                 '}';
     }
 }
