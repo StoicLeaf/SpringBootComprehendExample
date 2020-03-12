@@ -44,36 +44,60 @@ public class PageController {
 
     @PostMapping("/feedbackProcessing")
         public String feedbackProcessing(@ModelAttribute("feedbackEntry") String feedbackEntry) throws InterruptedException, IOException {
-        //THE FOLLOWING LINES ARE FOR TEST PURPOSES
-        Thread.sleep(1000);
-        Path path = Paths.get("");
-        path = Paths.get(path.toAbsolutePath().toString() + "\\src\\main\\resources\\static\\sentimentResponseExample.txt");
-        String mockSentimentJsonResponse = new String(Files.readAllBytes(path));
-        //TESTING STUFF DONE
 
-        //String inferenceResponse = awsGatewayService.callAWSComprehend(feedbackEntry);
-        //if(inferenceResponse.matches("error")){
-        //    return "error";
-        //}
-        //JsonObject jsonObject = JsonParser.parseString(inferenceResponse).getAsJsonObject();
+        String inferenceResponse = awsGatewayService.callAWSComprehend(feedbackEntry);
 
-        //String sentiment = jsonObject.get("Sentiment").getAsString();
-        //Double positiveDouble = jsonObject.get("SentimentScore").getAsJsonObject().get("Positive").getAsDouble();
-        //BigDecimal bd = new BigDecimal(positiveDouble).setScale(4, RoundingMode.HALF_UP);
+        if(JsonParser.parseString(inferenceResponse).getAsJsonObject().get("Sentiment") == null)
+        {
+            return "error";
+        }
 
-        TextSentiment textSentiment = new TextSentiment(feedbackEntry, mockSentimentJsonResponse);
+        TextSentiment textSentiment = new TextSentiment(feedbackEntry, inferenceResponse);
 
-        String databaseResponse = awsDatabaseService.persistEvaluatedFeedback(textSentiment);
+        awsDatabaseService.persistEvaluatedFeedback(textSentiment);
 
-        sessionDataService.setFeedback(feedbackEntry);
-        sessionDataService.setFeedbackEvaluation(textSentiment);
+        sessionDataService.setTextSentiment(textSentiment);
         return "redirect:/app/feedbackResult";
     }
 
     @RequestMapping("/feedbackResult")
     public String feedbackResult(Model model){
-        model.addAttribute("feedbackEntry", sessionDataService.getFeedback());
-        model.addAttribute("feedbackEvaluation", sessionDataService.getFeedbackEvaluation());
+        TextSentiment textSentiment = sessionDataService.getTextSentiment();
+
+       String color = "";
+       String text = "";
+
+        switch(sessionDataService.getTextSentiment().getSentiment()){
+            case "POSITIVE":
+                color="color:green";
+                text = "positive";
+                break;
+            case "NEGATIVE":
+                color="color:red";
+                text = "negative";
+                break;
+            case"NEUTRAL":
+                color="color:grey";
+                text = "neutral";
+                break;
+            case "MIXED":
+                color="color:orange";
+                text = "mixed";
+                break;
+        }
+        model.addAttribute("textColor", color);
+        model.addAttribute("textContent", text);
+
+        DecimalFormat df = new DecimalFormat("##.##");
+        String number = df.format(textSentiment.getPositiveEstimate()*100);
+        model.addAttribute("positive", number);
+        number = df.format(textSentiment.getNegativeEstimate()*100);
+        model.addAttribute("negative", number);
+        number = df.format(textSentiment.getNeutralEstimate()*100);
+        model.addAttribute("neutral", number);
+        number = df.format(textSentiment.getMixedEstimate()*100);
+        model.addAttribute("mixed", number);
+
         return "feedbackResult";
     }
 }

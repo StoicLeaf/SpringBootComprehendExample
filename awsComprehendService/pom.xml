@@ -12,7 +12,7 @@
 	<artifactId>awsComprehendService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>awsComprehendService</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Demo Project for AWS ML Service</description>
 
 	<properties>
 		<java.version>1.8</java.version>

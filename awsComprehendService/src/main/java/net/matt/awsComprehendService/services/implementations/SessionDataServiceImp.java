@@ -7,26 +7,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class SessionDataServiceImp implements SessionDataService {
 
-    private String feedback;
-    private TextSentiment feedbackEvaluation;
+    private TextSentiment textSentiment;
+
 
     @Override
-    public String getFeedback() {
-        return feedback;
+    public TextSentiment getTextSentiment() {
+        return textSentiment;
     }
 
     @Override
-    public void setFeedback(String feedback) {
-        this.feedback = feedback;
-    }
-
-    @Override
-    public TextSentiment getFeedbackEvaluation() {
-        return feedbackEvaluation;
-    }
-
-    @Override
-    public void setFeedbackEvaluation(TextSentiment feedbackEvaluation) {
-        this.feedbackEvaluation = feedbackEvaluation;
+    public void setTextSentiment(TextSentiment textSentiment) {
+        this.textSentiment = textSentiment;
     }
 }

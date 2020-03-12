@@ -29,9 +29,10 @@
     <div class="row justify-content-center align-items-center h-100">
         <div class="col-6">
             <h3 align="center">Enter your feedback below!</h3>
+            <p align="center">(with a minimum of 1 and a maximum of 2000 characters)</p>
             <form method="post" th:action="@{/app/feedbackProcessing}">
                 <div class="form-row">
-            <textarea class="form-control" id="descriptionTextarea" rows="6" name="feedbackEntry"
+            <textarea id="feedbackField" class="form-control" rows="6" name="feedbackEntry" required maxlength="2000"
                       style="resize: none"></textarea>
                 </div>
                 <br>
@@ -51,11 +52,18 @@
     document.getElementById("processingButton").style.display = "none";
 
     function switchButtons() {
-        let goButton = document.getElementById("goButton")
-        let processingButton = document.getElementById("processingButton")
+        let textarea = document.getElementById("feedbackField")
 
-        goButton.style.display = "none";
-        processingButton.style.display = "block";
+        console.log(textarea.value)
+        console.log(textarea.value.length != 0)
+
+        if(textarea.value.length != 0){
+            let goButton = document.getElementById("goButton")
+            let processingButton = document.getElementById("processingButton")
+
+            goButton.style.display = "none";
+            processingButton.style.display = "block";
+        }
     }
 </script>
 

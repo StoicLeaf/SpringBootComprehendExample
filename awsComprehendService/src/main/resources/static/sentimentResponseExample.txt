@@ -1,10 +1,10 @@
 {
-    "SentimentScore": {
-        "Mixed": 5.571818837779574e-05,
-        "Positive": 0.06852887570858002,
-        "Neutral": 0.3834829330444336,
-        "Negative": 0.5479324460029602
-    },
-    "Sentiment": "POSITIVE",
-    "detectedLanguage": "en"
-}
+     "SentimentScore": {
+         "Mixed": 5.571818837779574e-05,
+         "Positive": 0.06852887570858002,
+         "Neutral": 0.3834829330444336,
+         "Negative": 0.5479324460029602
+     },
+     "Sentiment": "POSITIVE",
+     "detectedLanguage": "en"
+ }

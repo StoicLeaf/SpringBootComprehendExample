@@ -15,16 +15,20 @@ public class AWSdatabaseServiceImp implements AWSdatabaseService {
 
     @Value("${db_username}")
     private String userName;
-    
-    private final String password = "sbdbtemp1";
-    private final String awsEndpoint = "comprehendappdatabase.cnb2slyihq9c.eu-central-1.rds.amazonaws.com";
+
+    @Value("${db_password}")
+    private String password;
+
+    @Value("${db_endpoint}")
+    private String awsEndpoint;
+
     private String SQLtemplate = "INSERT INTO text_sentiment (feedback, sentiment, positive, negative, neutral, mixed, detectedLanguage) VALUES(?, ?, ?, ?, ?, ?, ?)";
 
     @Override
     public String persistEvaluatedFeedback(TextSentiment textSentiment) {
 
         String connectionUrl = "jdbc:postgresql://" + awsEndpoint + "/postgres";
-
+        
         try {
             Connection connection = DriverManager.getConnection(connectionUrl, userName, password);
             PreparedStatement preparedStatement = connection.prepareStatement(SQLtemplate);

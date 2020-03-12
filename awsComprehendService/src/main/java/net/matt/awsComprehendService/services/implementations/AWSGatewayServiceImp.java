@@ -9,6 +9,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -16,6 +17,9 @@ import java.io.UnsupportedEncodingException;
 
 @Service
 public class AWSGatewayServiceImp implements AWSGatewayService {
+
+    @Value("${gateway_uri}")
+    private String gateway;
 
     @Override
     public String callAWSComprehend(String feedbackEntry) {
@@ -25,7 +29,7 @@ public class AWSGatewayServiceImp implements AWSGatewayService {
         jsonObject.addProperty("text", feedbackEntry);
         StringEntity stringEntity = new StringEntity(jsonObject.toString(), "UTF-8");
 
-        HttpPost httpPost = new HttpPost("https://yrf4n2ki59.execute-api.eu-central-1.amazonaws.com/test/comprehendcall");
+        HttpPost httpPost = new HttpPost(gateway);
         httpPost.setEntity(stringEntity);
 
         HttpClient httpClient = HttpClientBuilder.create().build();

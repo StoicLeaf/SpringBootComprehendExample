@@ -1,36 +1,83 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
-    <title><!doctype html>
-        <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-        <head>
-            <!-- Required meta tags -->
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-            <!-- Bootstrap CSS -->
-            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-                  integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-            <title>Pen & Paper Helper</title>
+    <title>AWS Comprehend Usecase Implementation</title>
 
-            <style>
-                body {
-                    height: 100%;
-                    margin: 0;
-                    padding: 0;
-                }
+    <style>
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
 
-                html {
-                    height: 100%;
-                }
-            </style>
-        </head>
+        html {
+            height: 100%;
+        }
+    </style>
+</head>
 <body>
 
-<p>hi there!</p>
+<div class="container h-100">
+    <div class="row justify-content-center align-items-center h-100">
+        <div class="col-6">
+            <h4 align="center">The feedback you left is:</h4>
+            <h4 align="center" th:text="${textContent}" th:style="${textColor}">positive!</h4>
+            <br>
+            <p align="center">The AWS Comprehend Results:</p>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Sentiment</th>
+                    <th scope="col">Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Positive</td>
+                    <td th:text="${positive+ '%'}">num</td>
+                </tr>
+                <tr>
+                    <td>Negative</td>
+                    <td th:text="${negative+ '%'}">num</td>
+                </tr>
+                <tr>
+                    <td>Neutral</td>
+                    <td th:text="${neutral+ '%'}">num</td>
+                </tr>
+                <tr>
+                    <td>Mixed</td>
+                    <td th:text="${mixed + '%'}">num</td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="text-center">
+                <button type="button" class="btn btn-info" onclick="location.href='./feedbackEntry';">
+                    Again!
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<script>
+    document.getElementById("processingButton").style.display = "none";
+
+    function switchButtons() {
+        let goButton = document.getElementById("goButton")
+        let processingButton = document.getElementById("processingButton")
+
+        goButton.style.display = "none";
+        processingButton.style.display = "block";
+    }
+</script>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -43,10 +90,5 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-</body>
-</html></title>
-</head>
-<body>
-
 </body>
 </html>

@@ -4,11 +4,7 @@ import net.matt.awsComprehendService.entities.TextSentiment;
 
 public interface SessionDataService {
 
-    String getFeedback();
+    TextSentiment getTextSentiment();
 
-    void setFeedback(String feedback);
-
-    TextSentiment getFeedbackEvaluation();
-
-    void setFeedbackEvaluation(TextSentiment feedbackEvaluation);
+    void setTextSentiment(TextSentiment textSentiment);
 }
